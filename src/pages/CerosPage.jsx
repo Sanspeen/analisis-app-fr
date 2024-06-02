@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useState } from 'react'; // Importa useState
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 export default function CerosPage() {
@@ -22,21 +22,35 @@ export default function CerosPage() {
         },
     ];
 
-    // Estado para almacenar el valor seleccionado
     const [selectedMethod, setSelectedMethod] = useState(options[0].value);
+    const [functionValue, setFunctionValue] = useState('');
+    const [aValue, setAValue] = useState('');
+    const [bValue, setBValue] = useState('');
+    const [toleranceValue, setToleranceValue] = useState('');
 
-    const solveEquation = (methodToSolve) => {
+    const solveEquation = () => {
+        console.log(functionValue);
+        console.log(aValue);
+        console.log(bValue);
+        console.log(toleranceValue);
+
         axios({
             method: "POST",
-            url: `http://localhost:5000/ceros-${methodToSolve}`, // Utiliza el método seleccionado como parte de la URL
+            url: `http://localhost:5000/ceros-${selectedMethod}`,
+            headers: {
+                "Access-Control-Allow-Origin": "*", // O el origen específico de tu aplicación de React
+                "Content-Type": "application/json"
+            },
             data: {
-                function: "2*x**2 / 30 - 1",
-                lim_inferior: 1,
-                lim_superior: 10,
-                tolerancia: 1e-6
+                function: functionValue,
+                lim_inferior: parseFloat(aValue),
+                lim_superior: parseFloat(bValue),
+                tolerancia: parseFloat(toleranceValue)
             }
         }).then((response) => {
             console.log(response);
+        }).catch((error) => {
+            console.error('Error en la solicitud:', error);
         });
     };
 
@@ -44,14 +58,49 @@ export default function CerosPage() {
         <div>
             <Link to="/"><button>{"<-"}</button></Link>
             <h1>Ceros</h1>
-            {/* Usa el estado selectedMethod para controlar el valor seleccionado del select */}
             <select value={selectedMethod} onChange={(e) => setSelectedMethod(e.target.value)}>
                 {options.map((option) => (
                     <option key={option.value} value={option.value}>{option.label}</option>
                 ))}
             </select>
-            {/* Pasa el método seleccionado a solveEquation */}
-            <button onClick={() => solveEquation(selectedMethod)}>Run</button>
+            <div>
+                <label htmlFor="functionInput">Función:</label>
+                <input 
+                    id="functionInput" 
+                    type="text" 
+                    value={functionValue} 
+                    onChange={(e) => setFunctionValue(e.target.value)} 
+                />
+            </div>
+            <div>
+                <label htmlFor="aInput">a:</label>
+                <input 
+                    id="aInput" 
+                    type="number" 
+                    value={aValue} 
+                    onChange={(e) => setAValue(e.target.value)} 
+                />
+            </div>
+            <div>
+                <label htmlFor="bInput">b:</label>
+                <input 
+                    id="bInput" 
+                    type="number" 
+                    value={bValue} 
+                    onChange={(e) => setBValue(e.target.value)} 
+                />
+            </div>
+            <div>
+                <label htmlFor="toleranceInput">Tolerancia:</label>
+                <input 
+                    id="toleranceInput" 
+                    type="number" 
+                    step="any" 
+                    value={toleranceValue} 
+                    onChange={(e) => setToleranceValue(e.target.value)} 
+                />
+            </div>
+            <button onClick={solveEquation}>Run</button>
         </div>
     );
 }
