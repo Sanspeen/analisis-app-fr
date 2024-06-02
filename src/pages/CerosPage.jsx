@@ -28,16 +28,12 @@ export default function CerosPage() {
     const [aValue, setAValue] = useState('');
     const [bValue, setBValue] = useState('');
     const [toleranceValue, setToleranceValue] = useState('');
+    const [raiz, setRaiz] = useState(0);
     const [iterationResults, setIterationResults] = useState([]);
     const [numberOfIterations, setNumberOfIterations] = useState(0);
 
 
     const solveEquation = () => {
-        console.log(functionValue);
-        console.log(aValue);
-        console.log(bValue);
-        console.log(toleranceValue);
-
         axios({
             method: "POST",
             url: `http://localhost:5000/ceros-${selectedMethod}`,
@@ -52,14 +48,22 @@ export default function CerosPage() {
                 tolerancia: parseFloat(toleranceValue)
             }
         }).then((response) => {
-
-            setIterationResults(response.data.valores_iteracion)
-            setNumberOfIterations(response.data.iteraciones)
+            setIterationResults(response.data.valores_iteracion);
+            setNumberOfIterations(response.data.iteraciones);
+            setRaiz(response.data.raiz);
             console.log(response);
         }).catch((error) => {
             console.error('Error en la solicitud:', error);
         });
     };
+
+    // Crear una tabla de iteraciones y valores
+    const iterationTable = Array.from({ length: numberOfIterations }, (_, index) => (
+        <tr key={index}>
+            <td>{index}</td>
+            <td>{iterationResults[index]}</td>
+        </tr>
+    ));
 
     return (
         <div>
@@ -107,8 +111,23 @@ export default function CerosPage() {
                     onChange={(e) => setToleranceValue(e.target.value)} 
                 />
             </div>
+            <h3>Raiz</h3>
+            <label htmlFor="toleranceInput">Resultado: {raiz}</label>
+
             <LineChart iteraciones={numberOfIterations} valores_iteracion={iterationResults}></LineChart>
             <button onClick={solveEquation}>Run</button>
+            {/* Agregar la tabla de iteraciones y valores */}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Iteración</th>
+                        <th>Valor</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {iterationTable}
+                </tbody>
+            </table>
         </div>
     );
 }
