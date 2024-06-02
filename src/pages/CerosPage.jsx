@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import LineChart from '../components/LineChart';
 
 export default function CerosPage() {
     const options = [
@@ -27,6 +28,9 @@ export default function CerosPage() {
     const [aValue, setAValue] = useState('');
     const [bValue, setBValue] = useState('');
     const [toleranceValue, setToleranceValue] = useState('');
+    const [iterationResults, setIterationResults] = useState([]);
+    const [numberOfIterations, setNumberOfIterations] = useState(0);
+
 
     const solveEquation = () => {
         console.log(functionValue);
@@ -48,6 +52,9 @@ export default function CerosPage() {
                 tolerancia: parseFloat(toleranceValue)
             }
         }).then((response) => {
+
+            setIterationResults(response.data.valores_iteracion)
+            setNumberOfIterations(response.data.iteraciones)
             console.log(response);
         }).catch((error) => {
             console.error('Error en la solicitud:', error);
@@ -100,6 +107,7 @@ export default function CerosPage() {
                     onChange={(e) => setToleranceValue(e.target.value)} 
                 />
             </div>
+            <LineChart iteraciones={numberOfIterations} valores_iteracion={iterationResults}></LineChart>
             <button onClick={solveEquation}>Run</button>
         </div>
     );

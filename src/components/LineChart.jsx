@@ -1,17 +1,19 @@
-// src/LineChart.js
 import React from 'react';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, LineElement, CategoryScale, LinearScale, PointElement } from 'chart.js';
 
 ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement);
 
-const LineChart = () => {
+const LineChart = ({ iteraciones, valores_iteracion }) => {
+    // Crear un array de números desde 0 hasta iteraciones
+    const labels = Array.from({ length: iteraciones }, (_, index) => index);
+
     const data = {
-        labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+        labels: labels,
         datasets: [
             {
-                label: 'Sales',
-                data: [120, 20, 50, 60, 33, 90],
+                label: 'Valores de Iteración',
+                data: valores_iteracion,
                 fill: false,
                 backgroundColor: 'rgb(75, 192, 192)',
                 borderColor: 'rgba(75, 192, 192, 0.2)',
