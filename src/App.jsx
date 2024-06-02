@@ -5,6 +5,10 @@ import PolynomialChart from './components/PolynomialChart';
 import HomePage from './pages/HomePage';
 import ReactDOM from "react-dom/client";
 import CerosPage from './pages/CerosPage';
+import SeriesAndErrors from './pages/SeriesAndErrors';
+import LinealEquations from './pages/LinealEquations';
+import InterpolationAndAdjustment from './pages/InterpolationAndAdjustment';
+import DifferentialEquations from './pages/DifferentialEquations';
 
 function App() {
   return (
@@ -12,7 +16,11 @@ function App() {
       <div className="App">
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/series-y-errores" element={<SeriesAndErrors />} />
           <Route path="/ceros" element={<CerosPage />} />
+          <Route path="/ecuaciones-lineales" element={<LinealEquations />} />
+          <Route path="/interpolacion-y-ajuste" element={<InterpolationAndAdjustment />} />
+          <Route path="/ecuaciones-diferenciales" element={<DifferentialEquations />} />
         </Routes>
         {/* <h1>React Chart.js Line Chart Example</h1>
         <LineChart />
