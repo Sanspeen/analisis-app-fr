@@ -45,7 +45,7 @@ export default function LinealEquations() {
         </div>
       )}
 
-      <MatrixInput />
+      <MatrixInput selectedMethod={selectedMethod}/>
     </div>
   );
 }
