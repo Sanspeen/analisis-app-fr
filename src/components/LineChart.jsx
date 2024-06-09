@@ -5,7 +5,6 @@ import { Chart as ChartJS, LineElement, CategoryScale, LinearScale, PointElement
 ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement);
 
 const LineChart = ({ iteraciones, valores_iteracion }) => {
-    // Crear un array de números desde 0 hasta iteraciones
     const labels = valores_iteracion; 
 
     const data = {

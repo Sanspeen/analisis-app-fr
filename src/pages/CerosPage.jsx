@@ -69,46 +69,48 @@ export default function CerosPage() {
         <div>
             <Link to="/"><button>{"<-"}</button></Link>
             <h1>Ceros</h1>
+            <label>Elegir metodo: </label>
+
             <select value={selectedMethod} onChange={(e) => setSelectedMethod(e.target.value)}>
                 {options.map((option) => (
                     <option key={option.value} value={option.value}>{option.label}</option>
                 ))}
             </select>
             <div>
-                <label htmlFor="functionInput">Función:</label>
-                <input 
-                    id="functionInput" 
-                    type="text" 
-                    value={functionValue} 
-                    onChange={(e) => setFunctionValue(e.target.value)} 
+                <label htmlFor="functionInput">Función: </label>
+                <input
+                    id="functionInput"
+                    type="text"
+                    value={functionValue}
+                    onChange={(e) => setFunctionValue(e.target.value)}
                 />
             </div>
             <div>
-                <label htmlFor="aInput">a:</label>
-                <input 
-                    id="aInput" 
-                    type="number" 
-                    value={aValue} 
-                    onChange={(e) => setAValue(e.target.value)} 
+                <label htmlFor="aInput">a: </label>
+                <input
+                    id="aInput"
+                    type="number"
+                    value={aValue}
+                    onChange={(e) => setAValue(e.target.value)}
                 />
             </div>
             <div>
-                <label htmlFor="bInput">b:</label>
-                <input 
-                    id="bInput" 
-                    type="number" 
-                    value={bValue} 
-                    onChange={(e) => setBValue(e.target.value)} 
+                <label htmlFor="bInput">b: </label>
+                <input
+                    id="bInput"
+                    type="number"
+                    value={bValue}
+                    onChange={(e) => setBValue(e.target.value)}
                 />
             </div>
             <div>
-                <label htmlFor="toleranceInput">Tolerancia:</label>
-                <input 
-                    id="toleranceInput" 
-                    type="number" 
-                    step="any" 
-                    value={toleranceValue} 
-                    onChange={(e) => setToleranceValue(e.target.value)} 
+                <label htmlFor="toleranceInput">Tolerancia: </label>
+                <input
+                    id="toleranceInput"
+                    type="number"
+                    step="any"
+                    value={toleranceValue}
+                    onChange={(e) => setToleranceValue(e.target.value)}
                 />
             </div>
             <h3>Raiz</h3>
