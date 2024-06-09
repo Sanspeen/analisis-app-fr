@@ -5,6 +5,10 @@ import MatrixInput from '../components/MatrixInput';
 export default function LinealEquations() {
   const options = [
     {
+      label: "Pivoteo",
+      value: "pivoteo",
+    },
+    {
       label: "Eliminacion gaussiana",
       value: "eliminacion-g",
     },

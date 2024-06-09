@@ -1,18 +1,83 @@
-import React from 'react'
+import React, { useState } from 'react';
+import axios from 'axios';
 import { Link } from 'react-router-dom';
 
-
 export default function SeriesAndErrors() {
-    
-    const solve = () =>{
-        alert("No se")
-    }
+
+    const options = [
+        {
+          label: "Taylor",
+          value: "taylor",
+        }
+      ];
+    const [selectedMethod, setSelectedMethod] = useState('taylor');
+    const [functionValue, setFunctionValue] = useState('');
+    const [x0, setX0] = useState('');
+    const [numIteraciones, setNumIteraciones] = useState('');
+
+    const solveEquation = () => {
+        const data = {
+            function: functionValue,
+            x0: parseFloat(x0),
+            num_iteraciones: parseInt(numIteraciones)
+        };
+
+        console.log(data);
+
+        axios({
+            method: "POST",
+            url: `http://localhost:5000/series-${selectedMethod}`,
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Content-Type": "application/json"
+            },
+            data: data
+        }).then((response) => {
+            console.log(response);
+        }).catch((error) => {
+            console.error('Error en la solicitud:', error);
+        });
+    };
 
     return (
         <div>
             <Link to="/"><button>{"<-"}</button></Link>
             <h1>Series de Taylor y errores</h1>
-            <Link><button onClick={solve}>Confirmar que se hacia aqui xD</button></Link>
+            <label>Elegir método:</label>
+            <select value={selectedMethod} onChange={(e) => setSelectedMethod(e.target.value)}>
+                {options.map((option) => (
+                    <option key={option.value} value={option.value}>{option.label}</option>
+                ))}
+            </select>
+            <div>
+                <label htmlFor="functionInput">Función: </label>
+                <input
+                    id="functionInput"
+                    type="text"
+                    value={functionValue}
+                    onChange={(e) => setFunctionValue(e.target.value)}
+                />
+            </div>
+            <div>
+                <label htmlFor="x0Input">x0: </label>
+                <input
+                    id="x0Input"
+                    type="number"
+                    value={x0}
+                    onChange={(e) => setX0(e.target.value)}
+                />
+            </div>
+            <div>
+                <label htmlFor="numIteracionesInput">Número de Iteraciones: </label>
+                <input
+                    id="numIteracionesInput"
+                    type="number"
+                    value={numIteraciones}
+                    onChange={(e) => setNumIteraciones(e.target.value)}
+                />
+            </div>
+
+            <button onClick={solveEquation}>Run</button>
         </div>
-    )
+    );
 }
