@@ -1,6 +1,6 @@
-import axios from 'axios';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 export default function InterpolationAndAdjustment() {
     const options = [
@@ -18,6 +18,10 @@ export default function InterpolationAndAdjustment() {
     const [listA, setListA] = useState('');
     const [listB, setListB] = useState('');
     const [listPredict, setListPredict] = useState('');
+    const [resultAprox, setResultAprox] = useState(null);
+    const [resultPolinomio, setResultPolinomio] = useState(null);
+    const [intercepto, setIntercepto] = useState(null);
+    const [pendiente, setPendiente] = useState(null);
 
     const solveEquation = () => {
         let data = {
@@ -32,8 +36,6 @@ export default function InterpolationAndAdjustment() {
             };
         }
 
-        console.log(data);
-
         axios({
             method: "POST",
             url: `http://localhost:5000/interpolacion-${selectedMethod}`,
@@ -44,6 +46,13 @@ export default function InterpolationAndAdjustment() {
             data: data
         }).then((response) => {
             console.log(response);
+            if (selectedMethod === 'lagrange') {
+                setResultAprox(response.data.result_aprox);
+                setResultPolinomio(response.data.result_polinomio);
+            } else if (selectedMethod === 'minimos-cuadrados') {
+                setIntercepto(response.data.intercepto);
+                setPendiente(response.data.pendiente);
+            }
         }).catch((error) => {
             console.error('Error en la solicitud:', error);
         });
@@ -77,17 +86,70 @@ export default function InterpolationAndAdjustment() {
                     onChange={(e) => setListB(e.target.value)}
                 />
             </div>
-            <div style={{ display: selectedMethod !== 'lagrange' ? 'none' : 'block' }}>
-                <label htmlFor="listPredictInput">Lista de Predicción: </label>
-                <input
-                    id="listPredictInput"
-                    type="text"
-                    value={listPredict}
-                    onChange={(e) => setListPredict(e.target.value)}
-                />
-            </div>
-
+            {/* Agregamos esta sección solo si el método seleccionado es Lagrange */}
+            {selectedMethod === 'lagrange' && (
+                <div>
+                    <label htmlFor="listPredictInput">Lista de Predicción: </label>
+                    <input
+                        id="listPredictInput"
+                        type="text"
+                        value={listPredict}
+                        onChange={(e) => setListPredict(e.target.value)}
+                    />
+                </div>
+            )}
             <button onClick={solveEquation}>Run</button>
+            {/* Agregamos las tablas de resultados si hay resultados */}
+            {resultAprox && (
+                <div>
+                    <h2>Resultados de Aproximación</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Índice</th>
+                                <th>Valor Aproximado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {resultAprox.map((value, index) => (
+                                <tr key={index}>
+                                    <td>{index}</td>
+                                    <td>{value}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            )}
+            {resultPolinomio && (
+                <div>
+                    <h2>Resultados Polinómicos</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Índice</th>
+                                <th>Valor Polinómico</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {resultPolinomio.map((value, index) => (
+                                <tr key={index}>
+                                    <td>{index}</td>
+                                    <td>{value}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            )}
+            {/* Mostramos los resultados de mínimos cuadrados */}
+            {intercepto !== null && pendiente !== null && (
+                <div>
+                    <h2>Resultados de Mínimos Cuadrados</h2>
+                    <p>Intercepto: {intercepto}</p>
+                    <p>Pendiente: {pendiente}</p>
+                </div>
+            )}
         </div>
     );
 }
