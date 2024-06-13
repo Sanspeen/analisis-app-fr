@@ -11,37 +11,32 @@ export default function MatrixInput({ selectedMethod }) {
     e.preventDefault();
     const initialMatrix = Array.from({ length: rows }, () => Array.from({ length: cols }, () => ''));
     setMatrix(initialMatrix);
-
-    // Inicializar la matriz B como un array de números
     const initialMatrixB = Array.from({ length: rows }, () => '');
     setMatrixB(initialMatrixB);
   };
 
-  const handleInputChange = (e, rowIndex, colIndex, matrixToUpdate) => {
-    const newMatrix = [...matrixToUpdate];
-    newMatrix[rowIndex] = e.target.value;
-    if (matrixToUpdate === matrix) {
+  const handleInputChange = (e, rowIndex, colIndex, isMatrixA) => {
+    const { value } = e.target;
+    if (isMatrixA) {
+      const newMatrix = matrix.map((row, i) =>
+        i === rowIndex ? row.map((val, j) => (j === colIndex ? value : val)) : row
+      );
       setMatrix(newMatrix);
     } else {
-      setMatrixB(newMatrix);
+      const newMatrixB = matrixB.map((val, i) => (i === rowIndex ? value : val));
+      setMatrixB(newMatrixB);
     }
   };
 
   const handleDataSubmit = () => {
-    console.log('Matriz A:', matrix);
-    console.log('Matriz B:', matrixB);
-
-    // Convertir los valores de las matrices a números
     const numericMatrix = matrix.map(row => row.map(value => parseFloat(value)));
     const numericMatrixB = matrixB.map(value => parseFloat(value));
 
-    // Preparar los datos para la solicitud HTTP
     const requestData = {
       matrix_A: numericMatrix,
       matrix_B: numericMatrixB
     };
 
-    // Determinar la URL y los datos específicos según el método seleccionado
     let url = '';
     let data = {};
 
@@ -50,7 +45,7 @@ export default function MatrixInput({ selectedMethod }) {
       data = requestData;
     } else if (selectedMethod === 'gauss-seidel') {
       url = 'http://localhost:5000/ecuaciones-lineales-gauss-seidel';
-      const tolerance = 1e-6; // Tolerancia fija para el método Gauss-Seidel
+      const tolerance = 1e-6;
       data = {
         ...requestData,
         tolerance: tolerance
@@ -59,7 +54,6 @@ export default function MatrixInput({ selectedMethod }) {
 
     console.log(data);
 
-    // Realizar la solicitud HTTP
     axios({
       method: 'POST',
       url: url,
@@ -82,11 +76,21 @@ export default function MatrixInput({ selectedMethod }) {
       <form onSubmit={handleDimensionSubmit}>
         <div>
           <label htmlFor="rowsInput">Rows: </label>
-          <input id="rowsInput" type="number" value={rows} onChange={(e) => setRows(e.target.value)} />
+          <input
+            id="rowsInput"
+            type="number"
+            value={rows}
+            onChange={(e) => setRows(Number(e.target.value))}
+          />
         </div>
         <div>
           <label htmlFor="colsInput">Cols: </label>
-          <input id="colsInput" type="number" value={cols} onChange={(e) => setCols(e.target.value)} />
+          <input
+            id="colsInput"
+            type="number"
+            value={cols}
+            onChange={(e) => setCols(Number(e.target.value))}
+          />
         </div>
         <button type="submit">Generate Matrix</button>
       </form>
@@ -103,7 +107,7 @@ export default function MatrixInput({ selectedMethod }) {
                       <input
                         type="text"
                         value={value}
-                        onChange={(e) => handleInputChange(e, rowIndex, colIndex, matrix)}
+                        onChange={(e) => handleInputChange(e, rowIndex, colIndex, true)}
                       />
                     </td>
                   ))}
@@ -119,17 +123,17 @@ export default function MatrixInput({ selectedMethod }) {
           <h3>Matrix B Inputs</h3>
           <table>
             <tbody>
-              <tr>
-                {matrixB.map((value, rowIndex) => (
-                  <td key={rowIndex}>
+              {matrixB.map((value, rowIndex) => (
+                <tr key={rowIndex}>
+                  <td>
                     <input
                       type="text"
                       value={value}
-                      onChange={(e) => handleInputChange(e, rowIndex, 0, matrixB)}
+                      onChange={(e) => handleInputChange(e, rowIndex, 0, false)}
                     />
                   </td>
-                ))}
-              </tr>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>

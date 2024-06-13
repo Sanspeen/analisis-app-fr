@@ -23,6 +23,15 @@ export default function InterpolationAndAdjustment() {
     const [intercepto, setIntercepto] = useState(null);
     const [pendiente, setPendiente] = useState(null);
 
+    const handleMethodChange = (e) => {
+        setSelectedMethod(e.target.value);
+        // Clear previous results
+        setResultAprox(null);
+        setResultPolinomio(null);
+        setIntercepto(null);
+        setPendiente(null);
+    };
+
     const solveEquation = () => {
         let data = {
             list_a: listA.split(',').map(Number),
@@ -63,7 +72,7 @@ export default function InterpolationAndAdjustment() {
             <Link to="/"><button>{"<-"}</button></Link>
             <h1>Interpolación y ajuste</h1>
             <label>Elegir método:</label>
-            <select value={selectedMethod} onChange={(e) => setSelectedMethod(e.target.value)}>
+            <select value={selectedMethod} onChange={handleMethodChange}>
                 {options.map((option) => (
                     <option key={option.value} value={option.value}>{option.label}</option>
                 ))}
