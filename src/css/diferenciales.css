@@ -1,0 +1,75 @@
+/* DifferentialEquations.css */
+
+/* Contenedor principal */
+.differential-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #ccc;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Título */
+.differential-container h1 {
+  font-size: 2em;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #222;
+}
+
+/* Etiquetas y entradas */
+.differential-container label {
+  display: block;
+  margin-top: 15px;
+  font-weight: bold;
+  color: #555;
+}
+
+.differential-container input,
+.differential-container select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #bbb;
+  border-radius: 4px;
+  box-sizing: border-box;
+  background-color: #eee;
+  color: #222;
+}
+
+/* Botón */
+.differential-container button {
+  background-color: #0056b3;
+  color: white;
+  padding: 10px 20px;
+  margin-top: 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+  font-size: 1em;
+}
+
+.differential-container button:hover {
+  background-color: #004494;
+}
+
+/* Enlace de navegación */
+.differential-container .back-button {
+  background-color: #6c757d;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  margin-bottom: 20px;
+  font-size: 1em;
+}
+
+.differential-container .back-button:hover {
+  background-color: #5a6268;
+}

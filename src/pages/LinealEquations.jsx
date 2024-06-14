@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import MatrixInput from '../components/MatrixInput';
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import MatrixInput from "../components/MatrixInput";
+import "../css/lineal.css";
 
 export default function LinealEquations() {
   const options = [
@@ -9,13 +10,13 @@ export default function LinealEquations() {
       value: "pivoteo",
     },
     {
-      label: "Eliminacion gaussiana",
+      label: "Eliminación gaussiana",
       value: "eliminacion-g",
     },
     {
       label: "Gauss Seidel",
       value: "gauss-seidel",
-    }
+    },
   ];
 
   const [selectedMethod, setSelectedMethod] = useState(options[0].value);
@@ -26,16 +27,20 @@ export default function LinealEquations() {
   };
 
   return (
-    <div>
-      <Link to="/"><button>{"<"}</button></Link>
-      <h1>Ecuaciones lineales</h1>
+    <div className="equations-container">
+      <Link to="/" className="back-button">
+        {"←"}
+      </Link>
+      <h1>Ecuaciones Lineales</h1>
       <label>Elegir método:</label>
       <select value={selectedMethod} onChange={handleMethodChange}>
         {options.map((option) => (
-          <option key={option.value} value={option.value}>{option.label}</option>
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
         ))}
       </select>
-      
+
       {selectedMethod === "gauss-seidel" && (
         <div>
           <label htmlFor="toleranceInput">Tolerancia: </label>
@@ -49,7 +54,7 @@ export default function LinealEquations() {
         </div>
       )}
 
-      <MatrixInput selectedMethod={selectedMethod}/>
+      <MatrixInput selectedMethod={selectedMethod} />
     </div>
   );
 }

@@ -1,14 +1,12 @@
-import './App.css'
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import LineChart from './components/LineChart';
-import PolynomialChart from './components/PolynomialChart';
-import HomePage from './pages/HomePage';
+import "./css/app.css";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import HomePage from "./pages/HomePage";
 import ReactDOM from "react-dom/client";
-import CerosPage from './pages/CerosPage';
-import SeriesAndErrors from './pages/SeriesAndErrors';
-import LinealEquations from './pages/LinealEquations';
-import InterpolationAndAdjustment from './pages/InterpolationAndAdjustment';
-import DifferentialEquations from './pages/DifferentialEquations';
+import CerosPage from "./pages/CerosPage";
+import SeriesAndErrors from "./pages/SeriesAndErrors";
+import LinealEquations from "./pages/LinealEquations";
+import InterpolationAndAdjustment from "./pages/InterpolationAndAdjustment";
+import DifferentialEquations from "./pages/DifferentialEquations";
 
 function App() {
   return (
@@ -19,8 +17,14 @@ function App() {
           <Route path="/series-y-errores" element={<SeriesAndErrors />} />
           <Route path="/ceros" element={<CerosPage />} />
           <Route path="/ecuaciones-lineales" element={<LinealEquations />} />
-          <Route path="/interpolacion-y-ajuste" element={<InterpolationAndAdjustment />} />
-          <Route path="/ecuaciones-diferenciales" element={<DifferentialEquations />} />
+          <Route
+            path="/interpolacion-y-ajuste"
+            element={<InterpolationAndAdjustment />}
+          />
+          <Route
+            path="/ecuaciones-diferenciales"
+            element={<DifferentialEquations />}
+          />
         </Routes>
         {/* <h1>React Chart.js Line Chart Example</h1>
         <LineChart />
@@ -30,7 +34,7 @@ function App() {
     </Router>
   );
 }
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<App />);
 
-export default App
+export default App;
