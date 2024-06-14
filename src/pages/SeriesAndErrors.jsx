@@ -51,7 +51,7 @@ export default function SeriesAndErrors() {
       <Link to="/" className="back-button">
         {"←"}
       </Link>
-      <h1>Series de Taylor y errores</h1>
+      <h1>Series de Taylor y Errores</h1>
       <label>Elegir método:</label>
       <select
         value={selectedMethod}
@@ -92,7 +92,6 @@ export default function SeriesAndErrors() {
       </div>
 
       <button onClick={solveEquation}>Run</button>
-
       {response && (
         <PolynomialChart coefficients={response} className="response" />
       )}

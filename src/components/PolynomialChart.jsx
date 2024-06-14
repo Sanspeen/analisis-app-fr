@@ -47,7 +47,12 @@ const PolynomialChart = ({ coefficients }) => {
         },
     };
 
-    return <Line data={data} options={options} />;
+    return (
+        <>
+            <div>.</div>
+            <Line data={data} options={options} />
+        </>
+    );
 };
 
 export default PolynomialChart;
