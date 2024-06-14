@@ -125,7 +125,6 @@ export default function CerosPage() {
           onChange={(e) => setToleranceValue(e.target.value)}
         />
       </div>
-      <h3>Raíz</h3>
       <label htmlFor="toleranceInput">Resultado: {raiz}</label>
 
       <LineChart
