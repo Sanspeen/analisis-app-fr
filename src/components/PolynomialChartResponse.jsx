@@ -1,3 +1,4 @@
+// src/PolynomialChartResponse.js
 import React from "react";
 import { Line } from "react-chartjs-2";
 import {
@@ -10,15 +11,13 @@ import {
 
 ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement);
 
-const LineChartDiffEQ = ({ iteraciones, valores_iteracion }) => {
-  const labels = valores_iteracion;
-
+const PolynomialChartResponse = ({ dataPoints }) => {
   const data = {
-    labels: labels,
+    labels: dataPoints.map((_, index) => index.toString()),
     datasets: [
       {
-        label: "Valores de Iteración",
-        data: iteraciones,
+        label: "Polynomial",
+        data: dataPoints,
         fill: false,
         backgroundColor: "rgb(75, 192, 192)",
         borderColor: "rgba(75, 192, 192, 0.2)",
@@ -28,6 +27,10 @@ const LineChartDiffEQ = ({ iteraciones, valores_iteracion }) => {
 
   const options = {
     scales: {
+      x: {
+        type: "linear",
+        position: "bottom",
+      },
       y: {
         beginAtZero: true,
       },
@@ -37,9 +40,9 @@ const LineChartDiffEQ = ({ iteraciones, valores_iteracion }) => {
   return (
     <>
       <div>.</div>
-      <Line data={data} options={options}></Line>
+      <Line data={data} options={options} />
     </>
   );
 };
 
-export default LineChartDiffEQ;
+export default PolynomialChartResponse;
