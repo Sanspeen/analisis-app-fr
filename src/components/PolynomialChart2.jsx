@@ -40,8 +40,6 @@ const PolynomialChart2 = ({ polynomialData, functionData }) => {
       },
       y: {
         beginAtZero: true,
-        min: -1000,
-        max: 1000,
       },
     },
   };
