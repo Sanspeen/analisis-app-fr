@@ -6,6 +6,7 @@ export default function MatrixInput({ selectedMethod }) {
   const [cols, setCols] = useState(0);
   const [matrix, setMatrix] = useState([]);
   const [matrixB, setMatrixB] = useState([]);
+  const [response, setResponse] = useState(null); // Nuevo estado para la respuesta
 
   const handleDimensionSubmit = (e) => {
     e.preventDefault();
@@ -50,6 +51,9 @@ export default function MatrixInput({ selectedMethod }) {
         ...requestData,
         tolerance: tolerance
       };
+    } else if (selectedMethod === 'pivoteo') {
+      url = 'http://localhost:5000/ecuaciones-lineales-pivoteo';
+      data = requestData;
     }
 
     console.log(data);
@@ -65,6 +69,7 @@ export default function MatrixInput({ selectedMethod }) {
     })
       .then((response) => {
         console.log(response);
+        setResponse(response.data); // Guardar la respuesta en el estado
       })
       .catch((error) => {
         console.error('Error en la solicitud:', error);
@@ -75,7 +80,7 @@ export default function MatrixInput({ selectedMethod }) {
     <div>
       <form onSubmit={handleDimensionSubmit}>
         <div>
-          <label htmlFor="rowsInput">Rows: </label>
+          <label htmlFor="rowsInput">Filas: </label>
           <input
             id="rowsInput"
             type="number"
@@ -84,7 +89,7 @@ export default function MatrixInput({ selectedMethod }) {
           />
         </div>
         <div>
-          <label htmlFor="colsInput">Cols: </label>
+          <label htmlFor="colsInput">Columnas: </label>
           <input
             id="colsInput"
             type="number"
@@ -140,6 +145,49 @@ export default function MatrixInput({ selectedMethod }) {
       )}
 
       {matrix.length > 0 && <button onClick={handleDataSubmit}>Submit Data</button>}
+
+      {(selectedMethod === 'pivoteo' || selectedMethod === 'eliminacion-g') && response?.result && (
+        <div>
+          <label>Respuesta: {response.result.map((res, index) => (
+            <span key={index}>{res.toFixed(2)}{index < response.result.length - 1 ? ', ' : ''}</span>
+          ))}</label>
+        </div>
+      )}
+
+      {selectedMethod === 'gauss-seidel' && response && (
+        <div>
+          <h3>Errores</h3>
+          <table>
+            <tbody>
+              {response.errores.map((error, index) => (
+                <tr key={index}>
+                  <td>{error.toFixed(8)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          <h3>Radio Espectral TG</h3>
+          <table>
+            <tbody>
+              <tr>
+                <td>{response.radio_espectral_tg}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3>Resultado</h3>
+          <table>
+            <tbody>
+              {response.result.map((res, index) => (
+                <tr key={index}>
+                  <td>{res.toFixed(8)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 }
