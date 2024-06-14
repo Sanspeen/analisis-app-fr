@@ -114,7 +114,7 @@ export default function SeriesAndErrors() {
         />
       </div>
       <div>
-        <label htmlFor="numIteracionesInput">Número de Iteraciones: </label>
+        <label htmlFor="numIteracionesInput">Grado Polinomial: </label>
         <input
           id="numIteracionesInput"
           type="number"
