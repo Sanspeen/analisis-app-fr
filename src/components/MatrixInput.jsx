@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { URL_BASE } from '../constants';
 
 export default function MatrixInput({ selectedMethod }) {
   const [rows, setRows] = useState(0);
@@ -42,17 +43,17 @@ export default function MatrixInput({ selectedMethod }) {
     let data = {};
 
     if (selectedMethod === 'eliminacion-g') {
-      url = 'http://localhost:5000/ecuaciones-lineales-eliminacion-g';
+      url = URL_BASE + '/ecuaciones-lineales-eliminacion-g';
       data = requestData;
     } else if (selectedMethod === 'gauss-seidel') {
-      url = 'http://localhost:5000/ecuaciones-lineales-gauss-seidel';
+      url = URL_BASE + '/ecuaciones-lineales-gauss-seidel';
       const tolerance = 1e-6;
       data = {
         ...requestData,
         tolerance: tolerance
       };
     } else if (selectedMethod === 'pivoteo') {
-      url = 'http://localhost:5000/ecuaciones-lineales-pivoteo';
+      url = URL_BASE + '/ecuaciones-lineales-pivoteo';
       data = requestData;
     }
 

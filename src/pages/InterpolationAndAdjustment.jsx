@@ -47,7 +47,7 @@ export default function InterpolationAndAdjustment() {
 
         axios({
             method: "POST",
-            url: `http://localhost:5000/interpolacion-${selectedMethod}`,
+            url: URL_BASE + `/interpolacion-${selectedMethod}`,
             headers: {
                 "Access-Control-Allow-Origin": "*",
                 "Content-Type": "application/json"

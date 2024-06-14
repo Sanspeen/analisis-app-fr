@@ -1,19 +1,23 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import PolynomialChart from '../components/PolynomialChart';
+import { URL_BASE } from '../constants';
+
 
 export default function SeriesAndErrors() {
-
     const options = [
         {
-          label: "Taylor",
-          value: "taylor",
+            label: "Taylor",
+            value: "taylor",
         }
-      ];
+    ];
+
     const [selectedMethod, setSelectedMethod] = useState('taylor');
     const [functionValue, setFunctionValue] = useState('');
     const [x0, setX0] = useState('');
     const [numIteraciones, setNumIteraciones] = useState('');
+    const [response, setResponse] = useState(null);
 
     const solveEquation = () => {
         const data = {
@@ -26,7 +30,7 @@ export default function SeriesAndErrors() {
 
         axios({
             method: "POST",
-            url: `http://localhost:5000/series-${selectedMethod}`,
+            url: `${URL_BASE}/series-${selectedMethod}`,
             headers: {
                 "Access-Control-Allow-Origin": "*",
                 "Content-Type": "application/json"
@@ -34,6 +38,7 @@ export default function SeriesAndErrors() {
             data: data
         }).then((response) => {
             console.log(response);
+            setResponse(response.data.coefficients); // Guardar la respuesta en el estado
         }).catch((error) => {
             console.error('Error en la solicitud:', error);
         });
@@ -78,6 +83,8 @@ export default function SeriesAndErrors() {
             </div>
 
             <button onClick={solveEquation}>Run</button>
+
+            {response && <PolynomialChart coefficients={response} />}
         </div>
     );
 }

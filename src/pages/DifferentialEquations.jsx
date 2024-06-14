@@ -30,7 +30,7 @@ export default function DifferentialEquations() {
 
     axios({
       method: "POST",
-      url: `http://localhost:5000/diff-eq-${selectedMethod}`,
+      url: URL_BASE + `/diff-eq-${selectedMethod}`,
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Content-Type": "application/json"

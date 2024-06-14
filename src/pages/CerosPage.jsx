@@ -36,7 +36,7 @@ export default function CerosPage() {
     const solveEquation = () => {
         axios({
             method: "POST",
-            url: `http://localhost:5000/ceros-${selectedMethod}`,
+            url: URL_BASE + `/ceros-${selectedMethod}`,
             headers: {
                 "Access-Control-Allow-Origin": "*", // O el origen específico de tu aplicación de React
                 "Content-Type": "application/json"

@@ -5,7 +5,7 @@ import { Chart as ChartJS, LineElement, CategoryScale, LinearScale, PointElement
 
 ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement);
 
-const PolynomialChart = () => {
+const PolynomialChart = ({ coefficients }) => {
     // Generar datos del polinomio
     const generatePolynomialData = (coefficients, xRange) => {
         const data = [];
@@ -19,8 +19,6 @@ const PolynomialChart = () => {
         return data;
     };
 
-    // Coeficientes del polinomio (ej. y = x^3 - 4x^2 + 2x - 1)
-    const coefficients = [-1, 2, -4, 1];
     const xRange = { min: -10, max: 10, step: 0.1 };
     const polynomialData = generatePolynomialData(coefficients, xRange);
 
