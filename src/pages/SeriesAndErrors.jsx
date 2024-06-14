@@ -43,11 +43,11 @@ export default function SeriesAndErrors() {
         setResponse(coefficients);
 
         // Calculate polynomial data
-        const polyData = calculatePolynomialData(coefficients, -10, 10, 0.1);
+        const polyData = calculatePolynomialData(coefficients, parseFloat(x0), parseFloat(x0 + 1), 0.1);
         setPolynomialData(polyData);
 
         // Calculate function data
-        const funcData = calculateFunctionData(functionValue, -10, 10, 0.1);
+        const funcData = calculateFunctionData(functionValue, parseFloat(x0), parseFloat(x0 + 1), 0.1);
         setFunctionData(funcData);
       })
       .catch((error) => {
