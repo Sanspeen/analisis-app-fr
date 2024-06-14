@@ -65,3 +65,7 @@ button {
 button:hover {
   background-color: #666; /* Color de fondo ligeramente más oscuro al pasar el mouse */
 }
+
+th{
+    color: black;
+}
