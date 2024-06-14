@@ -36,7 +36,7 @@ const LineChartDiffEQ = ({ iteraciones, valores_iteracion }) => {
 
   return (
     <>
-      <div></div>
+      <div>.</div>
       <Line data={data} options={options}></Line>
     </>
   );
