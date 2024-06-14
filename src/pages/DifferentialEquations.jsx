@@ -1,17 +1,12 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import LineChartDiffEQ from '../components/LineChartDiffEQ';
 
 export default function DifferentialEquations() {
   const options = [
-    {
-      label: "Kutta",
-      value: "kutta",
-    },
-    {
-      label: "Euler",
-      value: "euler",
-    }
+    { label: "Kutta", value: "kutta" },
+    { label: "Euler", value: "euler" }
   ];
 
   const [selectedMethod, setSelectedMethod] = useState(options[0].value);
@@ -20,6 +15,7 @@ export default function DifferentialEquations() {
   const [limSuperior, setLimSuperior] = useState('');
   const [initConditions, setInitConditions] = useState('');
   const [integrationStep, setIntegrationStep] = useState('');
+  const [chartData, setChartData] = useState({ tiempo: [], yeu: [] });
 
   const solveEquation = () => {
     const initConditionsArray = initConditions.split(',').map(Number);
@@ -30,10 +26,7 @@ export default function DifferentialEquations() {
       lim_superior: parseFloat(limSuperior),
       init_conditions: initConditionsArray,
       integration_step: parseFloat(integrationStep)
-    }
-
-    console.log(selectedMethod);
-    console.log(data);
+    };
 
     axios({
       method: "POST",
@@ -42,16 +35,14 @@ export default function DifferentialEquations() {
         "Access-Control-Allow-Origin": "*",
         "Content-Type": "application/json"
       },
-      data: {
-        function: functionValue,
-        lim_inferior: parseFloat(limInferior),
-        lim_superior: parseFloat(limSuperior),
-        init_conditions: initConditionsArray,
-        integration_step: parseFloat(integrationStep)
-      }
-    }).then((response) => {
-      console.log(response);
-    }).catch((error) => {
+      data
+    })
+    .then((response) => {
+      console.log(response.data);
+      const { tiempo, yeu } = response.data;
+      setChartData({ tiempo, yeu });
+    })
+    .catch((error) => {
       console.error('Error en la solicitud:', error);
     });
   };
@@ -112,8 +103,10 @@ export default function DifferentialEquations() {
           onChange={(e) => setIntegrationStep(e.target.value)}
         />
       </div>
-
       <button onClick={solveEquation}>Run</button>
+      {chartData.tiempo.length > 0 && (
+        <LineChartDiffEQ iteraciones={chartData.yeu} valores_iteracion={chartData.tiempo} />
+      )}
     </div>
   );
 }
