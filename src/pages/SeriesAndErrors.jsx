@@ -1,9 +1,10 @@
 import "../css/seriesAndErrors.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import PolynomialChart from "../components/PolynomialChart";
+import PolynomialChart2 from "../components/PolynomialChart2";
 import { URL_BASE } from "../constants";
 import { useState } from "react";
+import * as math from "mathjs";
 
 export default function SeriesAndErrors() {
   const options = [
@@ -18,6 +19,8 @@ export default function SeriesAndErrors() {
   const [x0, setX0] = useState("");
   const [numIteraciones, setNumIteraciones] = useState("");
   const [response, setResponse] = useState(null);
+  const [polynomialData, setPolynomialData] = useState([]);
+  const [functionData, setFunctionData] = useState([]);
 
   const solveEquation = () => {
     const data = {
@@ -25,8 +28,6 @@ export default function SeriesAndErrors() {
       x0: parseFloat(x0),
       num_iteraciones: parseInt(numIteraciones),
     };
-
-    console.log(data);
 
     axios({
       method: "POST",
@@ -38,12 +39,43 @@ export default function SeriesAndErrors() {
       data: data,
     })
       .then((response) => {
-        console.log(response);
-        setResponse(response.data.coefficients); // Guardar la respuesta en el estado
+        const coefficients = response.data.coefficients;
+        setResponse(coefficients);
+
+        // Calculate polynomial data
+        const polyData = calculatePolynomialData(coefficients, -10, 10, 0.1);
+        setPolynomialData(polyData);
+
+        // Calculate function data
+        const funcData = calculateFunctionData(functionValue, -10, 10, 0.1);
+        setFunctionData(funcData);
       })
       .catch((error) => {
         console.error("Error en la solicitud:", error);
       });
+  };
+
+  const calculatePolynomialData = (coefficients, min, max, step) => {
+    const data = [];
+    for (let x = min; x <= max; x += step) {
+      let y = 0;
+      coefficients.forEach((coef, index) => {
+        y += coef * Math.pow(x, index);
+      });
+      data.push(y);
+    }
+    return data;
+  };
+
+  const calculateFunctionData = (func, min, max, step) => {
+    const data = [];
+    const sanitizedFunc = func.replace('**', '^');
+    const parsedFunc = math.parse(sanitizedFunc).compile();
+    for (let x = min; x <= max; x += step) {
+      let y = parsedFunc.evaluate({ x });
+      data.push(y);
+    }
+    return data;
   };
 
   return (
@@ -93,8 +125,9 @@ export default function SeriesAndErrors() {
 
       <button onClick={solveEquation}>Run</button>
       {response && (
-        <PolynomialChart coefficients={response} className="response" />
+        <PolynomialChart2 polynomialData={polynomialData} functionData={functionData} className="response" />
       )}
     </div>
   );
 }
+

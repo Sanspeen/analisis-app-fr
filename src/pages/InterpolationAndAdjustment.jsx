@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import "../css/interpolacion.css";
 import { URL_BASE } from "../constants";
+import PolynomialChartResponse from "../components/PolynomialChartResponse";
 
 export default function InterpolationAndAdjustment() {
   const options = [
@@ -115,6 +116,12 @@ export default function InterpolationAndAdjustment() {
         </div>
       )}
       <button onClick={solveEquation}>Run</button>
+      {resultPolinomio && (
+        <div>
+          <h2>Resultados Polinómicos</h2>
+          <PolynomialChartResponse dataPoints={resultPolinomio} />
+        </div>
+      )}
       {resultAprox && (
         <div>
           <h2>Resultados de Aproximación</h2>
@@ -136,27 +143,7 @@ export default function InterpolationAndAdjustment() {
           </table>
         </div>
       )}
-      {resultPolinomio && (
-        <div>
-          <h2>Resultados Polinómicos</h2>
-          <table>
-            <thead>
-              <tr>
-                <th>Índice</th>
-                <th>Valor Polinómico</th>
-              </tr>
-            </thead>
-            <tbody>
-              {resultPolinomio.map((value, index) => (
-                <tr key={index}>
-                  <td>{index}</td>
-                  <td>{value}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+      
       {intercepto !== null && pendiente !== null && (
         <div>
           <h2>Resultados de Mínimos Cuadrados</h2>
